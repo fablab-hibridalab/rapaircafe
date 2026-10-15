@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guías de reparación · hibridalab Repair Café</title>
+<meta name="description" content="Guías para reparar objetos cotidianos. Arreglar es mejor que tirar.">
+<style>
+:root{
+  --bg:#fff; --ink:#111; --mut:#6d6d6d; --line:#e4e4e4; --soft:#f5f5f4; --acc:#ffd60a; --warn:#111;
+  --logo-filter:none;
+  --pad:clamp(16px,4vw,32px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#0f0f0f;--ink:#f2f2f0;--mut:#9a9a96;--line:#2a2a28;--soft:#1a1a19;--logo-filter:invert(1)}
+}
+:root[data-theme="dark"]{--bg:#0f0f0f;--ink:#f2f2f0;--mut:#9a9a96;--line:#2a2a28;--soft:#1a1a19;--logo-filter:invert(1)}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+.wrap{max-width:880px;margin:0 auto;padding:0 var(--pad)}
+a,button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+/* Cabecera */
+header{padding:var(--pad) 0 0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.logo{height:34px;width:auto;display:block;filter:var(--logo-filter)}
+.logo-txt{font-weight:800;font-size:26px;letter-spacing:-.04em;display:none}
+.badge{font-size:13px;color:var(--mut);letter-spacing:.02em}
+.badge b{color:var(--ink);font-weight:600}
+.hero{padding:clamp(40px,9vw,84px) 0 clamp(24px,5vw,40px)}
+h1{margin:0;font-size:clamp(34px,7vw,56px);line-height:1.05;letter-spacing:-.035em;font-weight:700}
+.hero p{margin:14px 0 0;color:var(--mut);max-width:34ch;font-size:18px}
+
+/* Controles */
+.search{position:relative;border-bottom:2px solid var(--ink)}
+.search input{width:100%;border:0;background:transparent;padding:14px 0;font-size:18px;outline:0}
+.search input::placeholder{color:var(--mut)}
+.search:focus-within{border-color:var(--ink);box-shadow:0 2px 0 var(--acc)}
+.cats{display:flex;gap:4px 20px;flex-wrap:wrap;padding:18px 0 6px}
+.cats button{background:none;border:0;padding:4px 0;color:var(--mut);cursor:pointer;font-size:15px;border-bottom:2px solid transparent}
+.cats button:hover{color:var(--ink)}
+.cats button[aria-pressed="true"]{color:var(--ink);font-weight:600;border-color:var(--acc)}
+
+/* Lista */
+.list{list-style:none;margin:8px 0 0;padding:0}
+.item{display:grid;grid-template-columns:2.2em 1fr auto;align-items:baseline;gap:4px 14px;width:100%;text-align:left;
+  background:none;border:0;border-bottom:1px solid var(--line);padding:18px 0;cursor:pointer}
+.item:hover .dev{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px;text-decoration-color:var(--acc)}
+.n{color:var(--mut);font-size:13px;font-variant-numeric:tabular-nums}
+.dev{font-size:20px;font-weight:600;letter-spacing:-.015em}
+.fail{grid-column:2;color:var(--mut)}
+.meta{grid-column:3;grid-row:1/3;align-self:center;text-align:right;font-size:13px;color:var(--mut)}
+.dif{display:inline-flex;align-items:center;gap:6px;margin-top:2px}
+.dots{display:inline-flex;gap:3px}
+.dots i{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--ink)}
+.dots i.on{background:var(--ink)}
+.empty{padding:40px 0;color:var(--mut)}
+.soon{margin:36px 0 0;color:var(--mut);font-size:14px}
+.soon span{color:var(--ink)}
+
+/* Secciones en construcción */
+.extra{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:48px}
+.blk{border:1.5px dashed var(--mut);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.blk h2{margin:0;font-size:20px;letter-spacing:-.02em}
+.blk p{margin:0;color:var(--mut);font-size:15px}
+.wip{margin-top:10px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--acc);color:#111;padding:3px 10px;border-radius:999px}
+@media (max-width:520px){.extra{grid-template-columns:1fr}}
+
+/* Acciones */
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:40px 0 0}
+.btn{border:1.5px solid var(--ink);background:transparent;border-radius:999px;padding:9px 18px;cursor:pointer;font-size:15px}
+.btn:hover{background:var(--soft)}
+.btn.p{background:var(--ink);color:var(--bg)}
+.btn.p:hover{opacity:.88}
+footer{padding:48px 0 40px;color:var(--mut);font-size:13px;max-width:60ch}
+footer code{background:var(--soft);padding:1px 5px;border-radius:4px}
+
+/* Diálogos */
+dialog{width:min(620px,calc(100% - 24px));max-height:calc(100dvh - 24px);overflow:auto;border:0;border-radius:14px;background:var(--bg);color:var(--ink);padding:clamp(20px,4vw,32px);box-shadow:0 20px 60px #0004}
+dialog::backdrop{background:#0007}
+dialog h2{margin:0;font-size:28px;letter-spacing:-.03em;line-height:1.1}
+.sub{color:var(--mut);margin:6px 0 0}
+.facts{display:flex;gap:6px 22px;flex-wrap:wrap;margin:18px 0 0;padding:14px 0;border-block:1px solid var(--line);font-size:14px}
+.facts dt{color:var(--mut);display:inline;margin-right:6px}
+.facts dd{display:inline;margin:0;font-weight:600}
+.facts div{display:inline}
+.note{margin:20px 0 0;padding:12px 14px;border-left:4px solid var(--acc);background:var(--soft);border-radius:0 8px 8px 0;font-size:15px}
+.note b{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
+dialog h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:26px 0 8px;font-weight:600}
+ol.steps{list-style:none;counter-reset:s;margin:0;padding:0}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:2em 1fr;gap:8px;padding:11px 0;border-bottom:1px solid var(--line)}
+ol.steps li::before{content:counter(s);font-weight:700;font-variant-numeric:tabular-nums}
+.row{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:24px}
+label{display:block;font-size:13px;font-weight:600;margin:16px 0 4px}
+.field{width:100%;border:0;border-bottom:1.5px solid var(--line);background:transparent;padding:8px 0;border-radius:0;outline:0}
+.field:focus{border-color:var(--ink)}
+textarea.field{resize:vertical;min-height:110px;border:1.5px solid var(--line);padding:10px;border-radius:8px}
+textarea.field:focus{border-color:var(--ink)}
+select.field{background:var(--bg)}
+
+@media (max-width:520px){
+  .item{grid-template-columns:1.8em 1fr}
+  .meta{grid-column:2;grid-row:auto;text-align:left;margin-top:6px}
+}
+@media print{
+  header,.search,.cats,.tools,footer,.soon,.row{display:none!important}
+  dialog{box-shadow:none;position:static;width:auto;max-height:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  .item .dev{transition:text-decoration-color .15s}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+      <img class="logo" src="data:image/png;base64,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" alt="hibridalab" id="logo" onerror="this.style.display='none';document.getElementById('logo-txt').style.display='block'">
+      <span class="logo-txt" id="logo-txt">hibridalab</span>
+      <span class="badge"><b>Repair Café</b></span>
+    </div>
+    <div class="hero">
+      <h1>Guías de<br>reparación</h1>
+      <p>Arreglar es mejor que tirar. Elige un objeto y sigue los pasos.</p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="search">
+    <input type="search" id="q" placeholder="Busca un objeto o una falla" aria-label="Buscar guía" autocomplete="off">
+  </div>
+  <div class="cats" id="cats" role="group" aria-label="Filtrar por categoría"></div>
+  <p class="sr" id="count" aria-live="polite" style="position:absolute;left:-9999px"></p>
+  <ul class="list" id="list"></ul>
+  <p class="soon" id="soon"></p>
+
+  <section class="extra" aria-label="Más secciones">
+    <article class="blk">
+      <h2>Reparado en hibridalab</h2>
+      <p>Objetos que ya han pasado por el taller.</p>
+      <span class="wip">En construcción</span>
+    </article>
+    <article class="blk">
+      <h2>Archivos</h2>
+      <p>Manuales, esquemas y documentos descargables.</p>
+      <span class="wip">En construcción</span>
+    </article>
+  </section>
+
+  <div class="tools">
+    <button class="btn p" id="add">Agregar guía</button>
+    <button class="btn" id="exp">Exportar</button>
+  </div>
+</main>
+
+<footer class="wrap">
+  Las guías agregadas desde el formulario se guardan solo en este navegador. Para publicarlas, exporta y pega el resultado en el arreglo <code>GUIAS</code> del código.
+</footer>
+
+<dialog id="dlg" aria-labelledby="dlg-t"></dialog>
+
+<dialog id="frm" aria-labelledby="frm-t">
+  <h2 id="frm-t">Nueva guía</h2>
+  <label for="f-d">Objeto</label><input class="field" id="f-d" placeholder="Licuadora">
+  <label for="f-f">Falla</label><input class="field" id="f-f" placeholder="El motor no gira">
+  <label for="f-c">Categoría</label><select class="field" id="f-c"></select>
+  <label for="f-df">Dificultad</label>
+  <select class="field" id="f-df"><option>Fácil</option><option>Media</option><option>Difícil</option></select>
+  <label for="f-h">Herramientas (separadas por coma)</label><input class="field" id="f-h">
+  <label for="f-s">Pasos (uno por línea)</label><textarea class="field" id="f-s"></textarea>
+  <label for="f-w">Advertencia de seguridad (opcional)</label><input class="field" id="f-w">
+  <div class="row"><button class="btn" id="f-x" type="button">Cancelar</button><button class="btn p" id="f-ok" type="button">Guardar</button></div>
+</dialog>
+
+<script>
+/* ===== DATOS: agrega nuevas guías aquí (o con el botón “Agregar guía”) ===== */
+const CATS=["Iluminación","Cocina","Climatización","Audio","Movilidad","Textil","Informática","Juguetes"];
+const GUIAS=[
+{id:1,dispositivo:"Lámpara de mesa",cat:"Iluminación",falla:"No enciende",dif:"Fácil",
+ herr:["Destornillador","Multímetro","Cinta aislante"],
+ aviso:"Desenchufa siempre el equipo antes de abrirlo.",
+ pasos:["Prueba con otra ampolleta para descartar que esté quemada.","Desenchufa y revisa el enchufe y el cable en busca de cortes.","Desatornilla el casquillo (portalámparas) y verifica que el contacto central no esté hundido.","Con el multímetro en continuidad, prueba el interruptor y el cable.","Cambia la pieza dañada, cierra y prueba."]},
+{id:2,dispositivo:"Tostadora",cat:"Cocina",falla:"La palanca no se queda abajo",dif:"Media",
+ herr:["Destornillador","Pincel","Alcohol isopropílico"],
+ aviso:"Desenchufada y fría. Nunca la abras con migas incendiadas.",
+ pasos:["Retira la bandeja inferior y vacía las migas.","Quita la carcasa exterior (suele llevar 2–4 tornillos).","Limpia con pincel el mecanismo de enganche del electroimán.","Revisa que el electroimán atraiga: si no, hay contacto sucio o cable suelto.","Limpia contactos con alcohol, vuelve a armar y prueba."]},
+{id:3,dispositivo:"Ventilador",cat:"Climatización",falla:"Gira lento o hace ruido",dif:"Fácil",
+ herr:["Destornillador","Aceite lubricante liviano","Paño"],
+ aviso:"Desenchufa antes de quitar la rejilla.",
+ pasos:["Retira la rejilla y las aspas.","Limpia el polvo del eje y de las aspas.","Aplica 1–2 gotas de aceite liviano en el eje del motor.","Gira a mano para repartir el aceite.","Monta aspas y rejilla; prueba en cada velocidad."]},
+{id:4,dispositivo:"Auriculares con cable",cat:"Audio",falla:"Suena solo de un lado",dif:"Media",
+ herr:["Cúter","Soldador de estaño","Multímetro"],
+ aviso:"El soldador supera los 300 °C: trabaja con ayuda si es tu primera vez.",
+ pasos:["Mueve el cable cerca del plug para confirmar que el corte está ahí.","Corta unos 5 cm del cable cerca del plug.","Pela y estaña los hilos, identificando izquierda, derecha y tierra.","Suelda al plug nuevo (o al mismo) respetando cada canal.","Prueba el audio y protege la unión con termorretráctil."]},
+{id:5,dispositivo:"Bicicleta",cat:"Movilidad",falla:"Rueda pinchada",dif:"Fácil",
+ herr:["Desmontables","Parches","Bomba"],
+ aviso:"",
+ pasos:["Saca la rueda y desinfla por completo la cámara.","Usa los desmontables para sacar el neumático.","Infla la cámara y sumérgela en agua para ubicar el pinchazo.","Lija, aplica pegamento y coloca el parche con presión.","Revisa el neumático por dentro (espinas), monta y infla."]},
+{id:6,dispositivo:"Secador de pelo",cat:"Climatización",falla:"Sopla pero no calienta",dif:"Media",
+ herr:["Destornillador","Multímetro","Pincel"],
+ aviso:"Desenchufa antes de abrirlo. No lo uses si la resistencia o el cable están dañados.",
+ pasos:["Limpia la rejilla trasera: el polvo acumulado hace saltar el termostato.","Desenchufa y abre la carcasa quitando los tornillos.","Retira el pelo y el polvo de la resistencia y del ventilador con el pincel.","Con el multímetro en continuidad, prueba el fusible térmico y la resistencia.","Sustituye la pieza sin continuidad por una de idéntico valor, cierra y prueba."]},
+{id:7,dispositivo:"Cafetera de goteo",cat:"Cocina",falla:"Tarda mucho o no sube el agua",dif:"Fácil",
+ herr:["Vinagre blanco","Agua","Paño"],
+ aviso:"Deja enfriar la cafetera antes de limpiarla.",
+ pasos:["Mezcla vinagre y agua a partes iguales y llena el depósito.","Pon la cafetera en marcha sin café ni filtro hasta pasar la mitad.","Apágala y espera una hora para que el vinagre disuelva la cal.","Termina el ciclo y vacía la jarra.","Haz dos ciclos solo con agua limpia para eliminar el olor."]},
+{id:8,dispositivo:"Cremallera",cat:"Textil",falla:"Se abre sola",dif:"Fácil",
+ herr:["Alicates","Cera o lápiz de grafito","Paño"],
+ aviso:"",
+ pasos:["Limpia los dientes con un cepillo y agua con jabón; déjalos secar.","Frota los dientes con cera o con la punta de un lápiz.","Cierra la cremallera y comprueba si el cursor sigue abierto.","Si se abre, aprieta suavemente los laterales del cursor con los alicates.","Prueba varias veces; si no aguanta, cambia el cursor."]},
+{id:9,dispositivo:"Botón",cat:"Textil",falla:"Se ha caído de la prenda",dif:"Fácil",
+ herr:["Aguja","Hilo resistente","Tijeras"],
+ aviso:"",
+ pasos:["Marca la posición original con los restos de hilo o un alfiler.","Pasa el hilo doble y haz un nudo al final.","Cose por los agujeros del botón dejando un pequeño espacio con la tela.","Da varias vueltas de hilo entre el botón y la tela para formar el pie.","Remata con un nudo por debajo y corta el sobrante."]},
+{id:10,dispositivo:"Altavoz Bluetooth",cat:"Audio",falla:"No carga",dif:"Media",
+ herr:["Palillo de madera","Alcohol isopropílico","Cable USB conocido"],
+ aviso:"Apaga el altavoz y no uses objetos metálicos dentro del puerto.",
+ pasos:["Prueba con otro cable y otro cargador para descartarlos.","Con el altavoz apagado, retira la suciedad del puerto con un palillo.","Limpia con un bastoncillo apenas humedecido en alcohol y deja secar.","Conecta y comprueba si el indicador responde.","Si no carga, abre la carcasa y revisa si el conector está suelto o despegado."]},
+{id:11,dispositivo:"Teléfono móvil",cat:"Informática",falla:"Carga mal o no carga",dif:"Fácil",
+ herr:["Palillo de madera","Linterna","Cable y cargador alternativos"],
+ aviso:"Apaga el teléfono antes de limpiar el puerto. No uses metal ni aire a presión.",
+ pasos:["Prueba con otro cable y otro cargador.","Alumbra el puerto y busca pelusa compactada.","Retira la pelusa con un palillo de madera, sin forzar los contactos.","Reinicia el teléfono y conecta de nuevo.","Si sigue igual, puede ser el puerto o la batería: lleva el equipo a un técnico."]},
+{id:12,dispositivo:"Portátil",cat:"Informática",falla:"Se calienta y va lento",dif:"Media",
+ herr:["Destornillador de precisión","Pincel","Aire en lata"],
+ aviso:"Apaga, desenchufa y, si es posible, desconecta la batería antes de abrirlo.",
+ pasos:["Apaga y desconecta el cargador.","Retira la tapa inferior siguiendo el manual del modelo.","Sujeta el ventilador con un dedo para que no gire de más.","Limpia el polvo de rejillas y ventilador con el pincel y aire en ráfagas cortas.","Cierra, arranca y comprueba que la temperatura baja."]},
+{id:13,dispositivo:"Juguete con pilas",cat:"Juguetes",falla:"No funciona",dif:"Fácil",
+ herr:["Pilas nuevas","Vinagre","Bastoncillo de algodón"],
+ aviso:"Retira de inmediato las pilas con fugas y evita tocar el residuo con las manos.",
+ pasos:["Sustituye las pilas por unas nuevas, respetando la polaridad.","Si ves residuo blanco en el compartimento, retira las pilas.","Humedece el bastoncillo con vinagre y frota los contactos oxidados.","Seca bien y comprueba que los muelles hacen contacto.","Vuelve a poner las pilas y prueba."]},
+{id:14,dispositivo:"Mando a distancia",cat:"Informática",falla:"Algunos botones no responden",dif:"Fácil",
+ herr:["Destornillador pequeño","Alcohol isopropílico","Bastoncillo"],
+ aviso:"",
+ pasos:["Cambia las pilas para descartar que sea eso.","Abre la carcasa con cuidado, a presión o con tornillos.","Separa la goma de botones de la placa.","Limpia con alcohol los contactos de la goma y de la placa.","Deja secar, vuelve a montar y prueba."]},
+{id:15,dispositivo:"Bicicleta",cat:"Movilidad",falla:"Los frenos frenan poco",dif:"Media",
+ herr:["Llave Allen","Alcohol isopropílico","Paño"],
+ aviso:"Prueba los frenos a baja velocidad antes de salir a la calle.",
+ pasos:["Limpia con alcohol las llantas o discos y las pastillas.","Revisa el desgaste de las pastillas; cámbialas si no tienen relieve.","Centra las pastillas sobre la superficie de frenado.","Ajusta la tensión del cable con el tensor o soltando y apretando el anclaje.","Aprieta la maneta y comprueba que no roza con la rueda al soltarla."]}
+];
+/* Próximamente */
+const WIP=[["Batidora","Cocina"],["Licuadora","Cocina"],["Radio","Audio"]];
+
+const KEY="rc-guias-extra";
+let extra=[];try{extra=JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){}
+let cat="Todas";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const all=()=>[...GUIAS,...extra];
+const lvl=d=>({"Fácil":1,"Media":2,"Difícil":3}[d]||1);
+const dots=d=>`<span class="dots" aria-hidden="true">${[1,2,3].map(i=>`<i class="${i<=lvl(d)?"on":""}"></i>`).join("")}</span>`;
+const pad=n=>String(n).padStart(2,"0");
+
+function cats(){
+  $("cats").innerHTML=["Todas",...CATS].map(c=>`<button type="button" data-c="${esc(c)}" aria-pressed="${c===cat}">${esc(c)}</button>`).join("");
+  $("cats").querySelectorAll("button").forEach(b=>b.onclick=()=>{cat=b.dataset.c;cats();render()});
+}
+function render(){
+  const q=$("q").value.trim().toLowerCase();
+  const list=all().filter(g=>(cat==="Todas"||g.cat===cat)&&(g.dispositivo+" "+g.falla+" "+g.cat).toLowerCase().includes(q));
+  $("list").innerHTML=list.length?list.map((g,i)=>`<li><button type="button" class="item" data-id="${esc(g.id)}">
+    <span class="n">${pad(i+1)}</span><span class="dev">${esc(g.dispositivo)}</span>
+    <span class="fail">${esc(g.falla)}</span>
+    <span class="meta">${esc(g.cat)}<br><span class="dif">${dots(g.dif)} ${esc(g.dif)}</span></span></button></li>`).join(""):`<li class="empty">No hay guías para esta búsqueda.</li>`;
+  $("list").querySelectorAll("button.item").forEach(b=>b.onclick=()=>show(b.dataset.id));
+  $("count").textContent=list.length+" guías";
+  const w=WIP.filter(w=>(cat==="Todas"||w[1]===cat)&&w[0].toLowerCase().includes(q));
+  $("soon").innerHTML=w.length?`En preparación: <span>${w.map(x=>esc(x[0])).join(" · ")}</span>`:"";
+}
+function show(id){
+  const g=all().find(x=>String(x.id)===String(id));if(!g)return;
+  $("dlg").innerHTML=`<h2 id="dlg-t">${esc(g.dispositivo)}</h2><p class="sub">${esc(g.falla)}</p>
+  <dl class="facts"><div><dt>Categoría</dt><dd>${esc(g.cat)}</dd></div><div><dt>Dificultad</dt><dd>${esc(g.dif)}</dd></div></dl>
+  ${g.herr?.length?`<h3>Herramientas</h3><p style="margin:0">${g.herr.map(esc).join(" · ")}</p>`:""}
+  ${g.aviso?`<div class="note"><b>Seguridad</b>${esc(g.aviso)}</div>`:""}
+  <h3>Pasos</h3><ol class="steps">${g.pasos.map(p=>`<li><span>${esc(p)}</span></li>`).join("")}</ol>
+  <div class="row"><button class="btn" id="pr" type="button">Imprimir</button><button class="btn p" id="cl" type="button">Cerrar</button></div>`;
+  $("dlg").showModal();
+  $("cl").onclick=()=>$("dlg").close();
+  $("pr").onclick=()=>window.print();
+}
+$("q").oninput=render;
+$("f-c").innerHTML=CATS.map(c=>`<option>${esc(c)}</option>`).join("");
+$("add").onclick=()=>$("frm").showModal();
+$("f-x").onclick=()=>$("frm").close();
+$("f-ok").onclick=()=>{
+  const d=$("f-d").value.trim(),f=$("f-f").value.trim(),p=$("f-s").value.split("\n").map(s=>s.trim()).filter(Boolean);
+  if(!d||!f||!p.length){alert("Completa objeto, falla y al menos un paso.");return}
+  extra.push({id:"x"+Date.now(),dispositivo:d,cat:$("f-c").value,falla:f,dif:$("f-df").value,herr:$("f-h").value.split(",").map(s=>s.trim()).filter(Boolean),aviso:$("f-w").value.trim(),pasos:p});
+  try{localStorage.setItem(KEY,JSON.stringify(extra))}catch(e){}
+  ["f-d","f-f","f-h","f-s","f-w"].forEach(i=>$(i).value="");
+  $("frm").close();render();
+};
+$("exp").onclick=()=>{
+  const t=JSON.stringify(all(),null,2);
+  $("dlg").innerHTML=`<h2 id="dlg-t">Exportar guías</h2><p class="sub">Copia este JSON y pégalo en el arreglo <code>GUIAS</code>.</p><label for="ex" class="sr" style="position:absolute;left:-9999px">JSON</label><textarea class="field" id="ex" rows="12" readonly style="margin-top:16px">${esc(t)}</textarea><div class="row"><button class="btn p" id="cl" type="button">Cerrar</button></div>`;
+  $("dlg").showModal();$("cl").onclick=()=>$("dlg").close();
+};
+["dlg","frm"].forEach(i=>$(i).addEventListener("click",e=>{if(e.target===$(i))$(i).close()}));
+cats();render();
+</script>
+</body>
+</html>
